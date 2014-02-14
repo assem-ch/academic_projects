@@ -1,5 +1,5 @@
 # -*- Mode: Python -*-
-
+""" 18-07-2010 - 17-08-2010 """
 # experimenting with first-order logic.
 # goal: a type inference engine with constraints.
 # See "HM(X) Type Inference is CLP(X) Solving"
@@ -16,9 +16,10 @@
 # The input syntax (for the 'tell()' method) is a lisp/prefix expression.
 #   "A => B|C" becomes (=> A (or B C))
 # See the tests for samples.
+# FOL Propositionalization, unification and lifting, skolemezation, forward and backward chaining 
 
 from pprint import pprint as pp
-import sys
+import sys,re
 
 is_a = isinstance
 
@@ -127,7 +128,13 @@ class UnboundVariableError (Exception):
 alpha_counter = counter()
 skolem_counter = counter()
 
+
+
+#############################################################################
+#############################################################################
+
 def to_cnf (e):
+    print e
 
     def unimply (e):
         if is_a (e, tuple):
@@ -144,6 +151,7 @@ def to_cnf (e):
             return e
 
     def move_not_inward (e):
+       
         if is_a (e, tuple):
             op = e[0]
             if op == 'not':
@@ -445,7 +453,7 @@ class clause:
                 except UnifyError:
                     pass
                 else:
-                    print 'eliminated', infix(x0), infix(y0)
+                    print '**eliminated', infix(x0), infix(y0)
                     eliminated.add (x0)
                     eliminated.add (y0)
             if len (eliminated):
@@ -495,6 +503,7 @@ class knowledge_base:
             self.clauses.append (clause (disjunct_set (c)))
 
     def dump (self):
+        print "clauses",self.clauses
         print 'KB {'
         for c in self.clauses:
             print '  %s,' % (infix (c),)
@@ -516,7 +525,7 @@ simple = (int, str)
 class UnifyError (Exception):
     pass
 
-def unify (x, y, subst):
+def unify (x, y, subst={}):
     if is_a (x, int) and is_a (y, int) and x == y:
         return subst
     elif is_const (x) and is_const (y) and x == y:
@@ -531,7 +540,7 @@ def unify (x, y, subst):
         else:
             return unify_sequence (x[1:], y[1:], subst)
     elif is_a (x, list) and is_a (y, list):
-        return unify_sequence (x, y)
+        return unify_sequence (x, y,subst)
     else:
         raise UnifyError (x, y, subst)
 
@@ -611,7 +620,6 @@ def print_answer (vars, vals):
         raise Solved
 
 # --- resolution ---
-
 def linear_resolution (kb, question, success=print_answer, randomize=False, negate_query=True):
     clauses = kb.clauses
     # negate the goal
@@ -741,28 +749,32 @@ class horn_knowledge_base:
     def sld_resolution (self, query, success=print_answer):
         # negate the goal
         query = parse (query)
-        print 'query=', infix(query)
         # pull out any variables the user is looking for
         vars = get_variables (query)
+
         goals = conjuncts (to_cnf (simplify (query)))
+
         
         def search (goals, vals, depth):
             goal = goals[0]
             goal_pred = get_predicate (goal)
             #print '%sgoal:%s' % ('  ' * depth, infix (goal))
             for rule in self.rules[goal_pred]:
+
                 # can we unify this head with our goal?
                 subst = {}
                 #print '%stry %s :- %s' % ('  ' * depth, infix(head), ', '.join ([infix(x) for x in body]))
                 rule = [self.standardize_apart (x, str(depth)) for x in rule]
                 head = rule[0]
                 body = rule[1:]
+                
                 try:
                     unify (head, goal, subst)
                 except UnifyError:
                     pass
                 else:
                     goals = body + goals[1:]
+
                     #print '%s[%d] goals: %s' % ('  ' * depth, len(goals), [infix(x) for x in goals])
                     #print '%ssubst:%r' % ('  ' * depth, subst)
                     if len(goals) == 0:
@@ -782,6 +794,330 @@ class horn_knowledge_base:
 
     def ask (self, query):
         self.sld_resolution (query)
+        
+        
+##############################################
+## Added By Assem                           ##        
+############################################## 
+def is_renaming(s1,s2):
+        """
+        s1 is a renaming of s2 if they are identical except for the names of variables
+        """
+        decision=True
+        if len(s1)!=len(s2):
+            decision=False
+        else:
+            for i in range(len(s1)):
+                if is_var(s1[i]) and is_var(s2[i]) :
+                    pass
+                elif is_const(s1[i]) and is_const(s2[i]) and s1[i]==s2[i]:
+                    pass
+                elif is_predicate(s1[i]) and is_predicate(s2[i]):
+                    if not is_renaming(s1[i],s2[i]):
+                        decision=False
+                        break;
+                else:
+                    decision=False
+                    break;
+        return decision
+
+def is_implication(x):
+    return True if is_a(x,list) and len(x)>1 else False
+
+def is_fact(x):
+    return True if ((is_a(x,list) and len(x)==1)) or is_a(x,tuple) else False
+
+
+
+def possible_substs(KB,P):
+    """ 
+        find each substitution S such Subst(S,p1,p2...)=Subst(S,p_1,p_2...) for some p_1,p_2 in KB
+        @param KB: the knowledge base
+        @param p: 
+        @return : list of all possible substitution
+                
+    """
+    substs=[{}]
+    finalset={}
+    for p in P:
+        tempset={}
+        for rules in KB.rules.values():
+            for r in rules:
+                if is_fact(r):
+                    subst={}
+                    s=r[0]
+                    
+                    if s[0]==p[0]:
+                        try:   
+                            unify(p, s, subst)
+                        except:
+                            pass
+                        else:
+                            for k,v in subst.items():
+                                if tempset.has_key(k):
+                                    tempset[k].add(v)
+                                else:
+                                    tempset[k]=set([v])
+                                
+
+
+        for k,v in tempset.items():
+            if finalset.has_key(k):
+                finalset[k]&=v
+            else:
+                finalset[k]=v
+            
+
+    for k,vset in finalset.items():
+        for v in vset:
+            temp=[]
+            for s in substs:
+                D={}
+                D[k]=v;
+                D.update(s)
+                temp.append(D)
+            substs=temp
+            
+    
+    return substs
+   
+def exist_in_list(q,lst):
+    """   """
+    j=0
+    exist=False
+    while j<len(lst) and not exist:
+        r=lst[j]
+        j+=1
+        if is_fact(r):
+            if is_renaming(r,q):
+                exist=True
+
+    return exist
+                    
+       
+   
+def exist_in_kb(q,KB):
+        """ test if a sentence is already exist in the Knowledge base such if its renamed """
+        exist,i=False,0
+        Rules=KB.rules.values()
+        while i<len(Rules) and not exist:
+            for lst in  Rules[i]:
+                exist|=exist_in_list(q,lst)
+            i+=1
+        
+        return exist
+    
+   
+    
+def FOL_FC_ASK(KB,alpha):
+    """
+    Forward chaining 
+    
+    @param KB: the knowledge base
+    @param alpha: the query,an atomic sentence
+    
+    @return: a substitution or false
+   
+    """
+    new=True
+    phi={}; 
+    query=parse(alpha) if is_a(alpha,str) else alpha
+    depth=0
+    cpt=0
+    OK=False
+    while new  :
+        new=[]
+        cpt+=1
+        for rules in KB.rules.values() if not OK else [] :
+            for r in rules if not OK else []:
+                if is_implication(r):
+                    rule = [KB.standardize_apart (x, str(depth)) for x in r]
+                    q = rule[0]
+                    p = rule[1:]
+                    for subst in possible_substs(KB,p) if not OK else []:
+                            q_=KB.apply_subst(q,subst)
+                            print q,"||=========",subst,"========>>",q_
+                            if not exist_in_kb(q_,KB) and not exist_in_list(q_,new):
+                                new.append(q_)
+                                print q_,query
+                                if q_==query:
+                                    OK=True
+                                else:
+                                    try:
+                                        
+                                        unify(q_,query,phi)#?
+                                    except:
+                                        pass
+                                    else:
+                                        OK=True
+                                        
+
+        for s in new:
+            KB.rules[s[0]].append([s])
+            
+        #depth+=1
+
+    print "\n\nFOL-Forward Chaining :\n The system is %s satisfied/PHI=%s " % ("" if OK else "not",str(lastphi))
+    KB.dump()
+    return OK if phi else phi
+
+
+
+
+
+def FOL_BC_ASK(KB,goals,subst={},depth=0):
+    """
+    Backward chaining 
+    
+    @param KB: the knowledge base
+    @param goals: a list of conjuncts forming a query
+    @param subst: the current substitution
+    
+  
+    @return: a  set of substitutions
+
+    """
+    OK=False
+    answers={}
+    if not goals:
+        answers.update(subst)
+        OK=True
+    else:
+        q_=apply_subst(goals[0], subst)
+        for rules in KB.rules.values():
+            for r in rules:
+                    rule = [KB.standardize_apart (x, str(depth)) for x in r]
+                    q = rule[0]
+                    p = rule[1:]
+                    try:
+                            subst_={}
+                            unify(q, q_, subst_)
+                    except:
+                            pass
+                    else:
+                            new_subst={};
+                            new_subst.update(subst);
+                            new_subst.update(subst_)
+                            new_goals=[] 
+                            p_=map(lambda c:c,p)
+                            new_goals.extend(p_);
+                            new_goals.extend(goals[1:])
+                            
+                            
+                            ## the printing is little different from what happens in the algorithm
+                            ## the algorithm use composition of substitutions whose effect is identical to
+                            ## the effect of applying each substituation in turn 
+                            
+                            if not is_fact(r):
+                                depth+=1
+                                print "\n*******Substitution %d **********\ngoals = " % depth ,map(lambda c:apply_subst(c, subst),goals)
+                                print q,"\t<=====",subst_,"======>\t",q_
+                                print "new_goals",map(lambda c:apply_subst(c, new_subst),new_goals)
+                            else:
+                                print "\n*********Satisfaction************\n",q
+
+
+
+                            OK,new_answers=FOL_BC_ASK(KB,new_goals,new_subst,depth).values()
+                            answers.update(new_answers)
+
+    return {"OK":OK,"answers":answers}
+ 
+ 
+
+
+  
+def lightest(sos):
+    min=99999
+    
+    index=None
+    for i in range(len(sos)):
+        size=sos[i].size
+        if size<min:
+            min = size
+            index=i
+   
+    return index
+  
+
+
+
+def Otter(sos,usable):
+    """
+    @param sos: a set of support - clauses defining the problem
+    @param usable: background knowledge potentially relevant to the problem
+    """
+    CPT=0
+    refutation=False
+    while sos and not refutation:
+        i=lightest(sos)
+        clause=sos[i]
+        CPT+=1
+        print 
+        print CPT,"choosed",clause
+        sos.pop(i)
+        usable.append(clause)
+        refutation=Process(Infer(clause,usable),sos)
+        
+    return refutation,CPT
+
+
+
+def Infer(clause,usable):
+    """
+    @param clause:
+    @param usable:
+    
+    @return : the resulting clauses 
+    """
+
+    res=[]
+    for cl in  [cl for cl in map(lambda x:clause.resolve(x),usable) if (cl!=False) ]:
+        new=cl[1].apply_subst(cl[0])
+        if not exist_in_list(new,usable):
+            res.append(new)
+        else:print "++"
+
+    return tuple(res)
+
+
+
+
+
+def Merge_identical_literals(clause):
+    """ the literals is implemented as a Set and it automatically merges identical members"""
+    return clause
+
+
+def Process(clauses, sos ):
+    refutation=False
+    for clause in clauses:
+        clause=simplify(clause)
+        Merge_identical_literals(clause)
+        sos.insert(0,clause)
+        nb=len(clause)
+        if nb==0:
+            refutation=True
+        elif nb==1:
+            #refutation unit?!!
+            pass
+                
+    return refutation
+
+def thm_provers(goal,kb):
+    """
+    
+    """
+    sos=[clause (disjunct_set(c)) for c in conjuncts (to_cnf (simplify (parse ("(not "+goal+")"))))]
+    usable=kb.clauses
+    
+    OK,CPT=Otter(sos, usable)
+    print "\n\nTheorem Provers -Otter algorithm :\n The system is %sresolved/steps=%d " % ("" if OK else "not ",CPT)
+    
+    
+    return OK
+
+    
 
 # NOTE: when translating Prolog code into FOL, it's very important to remember
 #   that the implication symbol is *reversed* in Prolog:
@@ -796,56 +1132,67 @@ class horn_knowledge_base:
 #    becomes "(forall (z) (=> (and (Q z) (M z)) (P z)))"
 #
 
-def test2():
-    # test to_cnf
-    import sys
-    pp = lambda x: sys.stdout.write ('%s\n' % (infix(x),))
-    pp (to_cnf (parse ('(=> X (not Y))')))
-    pp (to_cnf (parse ('(=> (not X) Y)')))
-    pp (to_cnf (parse ('(not (not (not (not X))))')))
-    pp (to_cnf (parse ('(not (or X (and Y Z)))')))
-    pp (to_cnf (parse ('(not (or X (and Y (=> A B))))')))
-    pp (to_cnf (parse ('(not (or (not (or A (not B))) (not (not C))))')))
-    pp (to_cnf (parse ('(or (forall x (P x)) (exists x (Q x)))')))
-    pp (to_cnf (parse ('(exists x (forall x (or (P x) (Q x))))')))
-    pp (to_cnf (parse ('(forall x (or (exists y (and (Animal y) (not (Loves x y)))) (exists z (Loves z x))))')))
-    pp (to_cnf (parse ('(or (and A B) C)')))
-    pp (to_cnf (parse ('(or (and A B) (and C D))')))
 
-def test3():
-    kb = horn_knowledge_base()
-    kb.tell ('(forall (x y z) (=> (and (American x) (Weapon y) (Sells x y z) (Hostile z)) (Criminal x)))')
-    kb.tell ('(American West)')
-    kb.tell ('(exists (x) (and (Owns Nono x) (Missile x)))')
-    kb.tell ('(forall (x) (=> (Missile x) (Weapon x)))')
-    kb.tell ('(forall (x) (=> (and (Missile x) (Owns Nono x)) (Sells West x Nono)))')
-    kb.tell ('(forall (x) (=> (Enemy x America) (Hostile x)))')
-    kb.tell ('(Enemy Nono America)')
-    kb.dump()
-    kb.sld_resolution ('(Criminal West)')
-    #linear_resolution (kb, '(Criminal West)')
-    #return kb
+class Test:
+    """
+    the global class of all  tests
 
-def test4():
-    kb = knowledge_base()
-    kb.tell ('(forall (x) (Add x 0 x))')
-    kb.tell ('(forall (x y z) (=> (Add x y z) (Add x (S y) (S z))))')
-    kb.dump()
-    #linear_resolution (kb, '(forall (v) (Add (S 0) v (S (S 0))))')
-    #linear_resolution (kb, '(forall (v) (Add (S (S 0)) (S (S 0)) v))')
-    linear_resolution (kb, '(forall (u v) (Add u v (S (S (S 0)))))')
+    """
+       
+    @staticmethod
+    def test2_to_cnf():
+        # test to_cnf
+        import sys
+        pp = lambda x: sys.stdout.write ('%s\n' % (infix(x),))
+        pp (to_cnf (parse ('(=> X (not Y))')))
+        pp (to_cnf (parse ('(=> (not X) Y)')))
+        pp (to_cnf (parse ('(not (not (not (not X))))')))
+        pp (to_cnf (parse ('(not (or X (and Y Z)))')))
+        pp (to_cnf (parse ('(not (or X (and Y (=> A B))))')))
+        pp (to_cnf (parse ('(not (or (not (or A (not B))) (not (not C))))')))
+        pp (to_cnf (parse ('(or (forall x (P x)) (exists x (Q x)))')))
+        pp (to_cnf (parse ('(exists x (forall x (or (P x) (Q x))))')))
+        pp (to_cnf (parse ('(forall x (or (exists y (and (Animal y) (not (Loves x y)))) (exists z (Loves z x))))')))
+        pp (to_cnf (parse ('(or (and A B) C)')))
+        pp (to_cnf (parse ('(or (and A B) (and C D))')))
 
-def test5():
-    # This one can't be done with SLD since the first clause is not a Horn clause.
-    kb = knowledge_base()
-    kb.tell ('(forall (x) (=> (forall (y) (=> (Animal y) (Loves x y))) (exists (y) (Loves y x))))')
-    kb.tell ('(forall (x) (=> (exists (y) (and (Animal y) (Kills x y))) (forall (z) (not (Loves z x)))))')
-    kb.tell ('(forall (x) (=> (Animal x) (Loves Jack x)))')
-    kb.tell ('(or (Kills Jack Tuna) (Kills Curiosity Tuna))')
-    kb.tell ('(Cat Tuna)')
-    kb.tell ('(forall (x) (=> (Cat x) (Animal x)))')
-    kb.dump()
-    linear_resolution (kb, '(Kills Curiosity Tuna)')
+    @staticmethod
+    def test3_sld_resolution():
+        kb = horn_knowledge_base()
+        kb.tell ('(forall (x y z) (=> (and (American x) (Weapon y) (Sells x y z) (Hostile z)) (Criminal x)))')
+        kb.tell ('(American West)')
+        kb.tell ('(exists (x) (and (Owns Nono x) (Missile x)))')
+        kb.tell ('(forall (x) (=> (Missile x) (Weapon x)))')
+        kb.tell ('(forall (x) (=> (and (Missile x) (Owns Nono x)) (Sells West x Nono)))')
+        kb.tell ('(forall (x) (=> (Enemy x America) (Hostile x)))')
+        kb.tell ('(Enemy Nono America)')
+        kb.dump()
+        print "rules>>>>>>>>>>>>>>>>>>", kb.rules
+        kb.sld_resolution ('(Criminal West)')
+        #linear_resolution (kb, '(Criminal West)')
+        return kb
+    @staticmethod
+    def test4_linear_resolution():
+        kb = knowledge_base()
+        kb.tell ('(forall (x) (Add x 0 x))')
+        kb.tell ('(forall (x y z) (=> (Add x y z) (Add x (S y) (S z))))')
+        kb.dump()
+        #linear_resolution (kb, '(forall (v) (Add (S 0) v (S (S 0))))')
+        #linear_resolution (kb, '(forall (v) (Add (S (S 0)) (S (S 0)) v))')
+        linear_resolution (kb, '(forall (u v) (Add u v (S (S (S 0)))))')
+
+    @staticmethod
+    def test5_linear_resolution():
+        # This one can't be done with SLD since the first clause is not a Horn clause.
+        kb = knowledge_base()
+        kb.tell ('(forall (x) (=> (forall (y) (=> (Animal y) (Loves x y))) (exists (y) (Loves y x))))')
+        kb.tell ('(forall (x) (=> (exists (y) (and (Animal y) (Kills x y))) (forall (z) (not (Loves z x)))))')
+        kb.tell ('(forall (x) (=> (Animal x) (Loves Jack x)))')
+        kb.tell ('(or (Kills Jack Tuna) (Kills Curiosity Tuna))')
+        kb.tell ('(Cat Tuna)')
+        kb.tell ('(forall (x) (=> (Cat x) (Animal x)))')
+        kb.dump()
+        linear_resolution (kb, '(Kills Curiosity Tuna)')
 
 # from http://www.cs.miami.edu/~geoff/Courses/CSC648-07F/Content/LinearResolution.shtml
 
@@ -858,140 +1205,197 @@ def test5():
 #       ~s(b) | ~m(a),
 #       ~q(a),
 #       ~q(T) | s(T) }
+    
+    @staticmethod
+    def test6_linear_resolution():
+        kb = knowledge_base()
+        kb.tell ('(forall (x) (or (not (P x)) (T x)))')
+        kb.tell ('(forall (x) (or (not (P x)) (S x)))')
+        kb.tell ('(or (not (T B)) (P B))')
+        kb.tell ('(or (not (T B)) (S B))')
+        kb.tell ('(forall (w) (or (not (S B)) (M w)))')
+        kb.tell ('(or (not (S B)) (not (M A)))')
+        kb.tell ('(not (Q A))')
+        kb.tell ('(forall (t) (or (not (Q t)) (S t)))')
+        kb.dump()
+        # 'top clause' is the query?
+        linear_resolution (kb, '(forall (z) (or (P z) (Q z)))', negate_query=False)
 
-def test6():
-    kb = knowledge_base()
-    kb.tell ('(forall (x) (or (not (P x)) (T x)))')
-    kb.tell ('(forall (x) (or (not (P x)) (S x)))')
-    kb.tell ('(or (not (T B)) (P B))')
-    kb.tell ('(or (not (T B)) (S B))')
-    kb.tell ('(forall (w) (or (not (S B)) (M w)))')
-    kb.tell ('(or (not (S B)) (not (M A)))')
-    kb.tell ('(not (Q A))')
-    kb.tell ('(forall (t) (or (not (Q t)) (S t)))')
-    kb.dump()
-    # 'top clause' is the query?
-    linear_resolution (kb, '(forall (z) (or (P z) (Q z)))', negate_query=False)
+    @staticmethod
+    def test7_linear_resolution():
+        kb = knowledge_base()
+        kb.tell ('(forall (a l1 l2 l3) (=> (Append l1 l2 l3) (Append (Cons a l1) l2 (Cons a l3))))')
+        kb.tell ('(forall (l1 l2) (Append Nil l1 l1))')
+        #linear_resolution (kb, '(forall (z) (Append (Cons A (Cons B Nil)) (Cons B (Cons C Nil)) z))')
+        linear_resolution (kb, '(forall (u v) (Append u v (Cons A (Cons B (Cons C (Cons D Nil))))))')
 
-def test7():
-    kb = knowledge_base()
-    kb.tell ('(forall (a l1 l2 l3) (=> (Append l1 l2 l3) (Append (Cons a l1) l2 (Cons a l3))))')
-    kb.tell ('(forall (l1 l2) (Append Nil l1 l1))')
-    #linear_resolution (kb, '(forall (z) (Append (Cons A (Cons B Nil)) (Cons B (Cons C Nil)) z))')
-    linear_resolution (kb, '(forall (u v) (Append u v (Cons A (Cons B (Cons C (Cons D Nil))))))')
+    @staticmethod
+    def test8_towers_of_hanoi():
+        # towers of hanoi
+        kb = horn_knowledge_base()
+        kb.tell ('(forall (n output) (=> (Move A B C n output) (Hanoi n output)))')
+        kb.tell (
+            '(forall (a b c m output out1 out2)'
+            '  (=> (and (Move a c b m out1) (Move c b a m out2) (Append out1 (Cons (To a b) out2) output))'
+            '      (Move a b c (Succ m) output)))'
+            )
+        kb.tell ('(forall (l1) (Append Nil l1 l1))')
+        kb.tell ('(forall (a l1 l2 l3) (=> (Append l1 l2 l3) (Append (Cons a l1) l2 (Cons a l3))))')
+        kb.tell ('(forall (a b c) (Move a b c 0 Nil))')
+        kb.dump()
+        kb.ask ('(forall (z) (Hanoi (Succ (Succ (Succ 0))) z))')
+    
+    @staticmethod
+    def test9_ask():
+        kb = horn_knowledge_base()
+        kb.tell ('(French Jean)')
+        kb.tell ('(French Jacques)')
+        kb.tell ('(British Peter)')
+        kb.tell ('(forall (x y) (=> (and (French x) (Wine y)) (Likewine x y)))')
+        kb.tell ('(forall (x) (=> (British x) (Likewine x Bordeaux)))')
+        kb.tell ('(Wine Burgundy)')
+        kb.tell ('(Wine Bordeaux)')
+        kb.ask ('(forall (u v) (Likewine u v))')
 
-def test8():
-    # towers of hanoi
-    kb = horn_knowledge_base()
-    kb.tell ('(forall (n output) (=> (Move A B C n output) (Hanoi n output)))')
-    kb.tell (
-        '(forall (a b c m output out1 out2)'
-        '  (=> (and (Move a c b m out1) (Move c b a m out2) (Append out1 (Cons (To a b) out2) output))'
-        '      (Move a b c (Succ m) output)))'
-        )
-    kb.tell ('(forall (l1) (Append Nil l1 l1))')
-    kb.tell ('(forall (a l1 l2 l3) (=> (Append l1 l2 l3) (Append (Cons a l1) l2 (Cons a l3))))')
-    kb.tell ('(forall (a b c) (Move a b c 0 Nil))')
-    kb.dump()
-    kb.ask ('(forall (z) (Hanoi (Succ (Succ (Succ 0))) z))')
+    # from wikipedia
+    @staticmethod
+    def test11_linear_resolution():
+        kb = knowledge_base()
+        kb.tell ('(forall (x y z) (=> (and (Parent_Child z x) (Parent_Child z y)) (Sibling x y)))')
+        kb.tell ('(forall (x y) (=> (Father_Child x y) (Parent_Child x y)))')
+        kb.tell ('(forall (x y) (=> (Mother_Child x y) (Parent_Child x y)))')
+        kb.tell ('(Mother_Child Trude Sally)')
+        kb.tell ('(Father_Child Tom Sally)')
+        kb.tell ('(Father_Child Tom Erica)')
+        kb.tell ('(Father_Child Mike Tom)')
+        #linear_resolution (kb, '(Sibling Sally Erica)')
+        linear_resolution (kb, '(forall (f c) (Father_Child f c))')
+    
+    @staticmethod
+    def test12_ask():
+        kb = horn_knowledge_base()
+        kb.tell ('(forall (a l1 l2 l3) (=> (Append l1 l2 l3) (Append (Cons a l1) l2 (Cons a l3))))')
+        kb.tell ('(forall (l1 l2) (Append Nil l1 l1))')
+        #linear_resolution (kb, '(forall (z) (Append (Cons A (Cons B Nil)) (Cons B (Cons C Nil)) z))')
+        kb.ask ('(forall (u v) (Append u v (Cons A (Cons B (Cons C (Cons D Nil))))))')
+        #kb.sld_resolution ('(forall (u v) (Append u v (Cons A Nil)))')
 
-def test9():
-    kb = horn_knowledge_base()
-    kb.tell ('(French Jean)')
-    kb.tell ('(French Jacques)')
-    kb.tell ('(British Peter)')
-    kb.tell ('(forall (x y) (=> (and (French x) (Wine y)) (Likewine x y)))')
-    kb.tell ('(forall (x) (=> (British x) (Likewine x Bordeaux)))')
-    kb.tell ('(Wine Burgundy)')
-    kb.tell ('(Wine Bordeaux)')
-    kb.ask ('(forall (u v) (Likewine u v))')
+    @staticmethod
+    def test13_ask():
+        # PLAI chapter 33 - Type Inference
+        kb = horn_knowledge_base()
+        kb.tell ('(forall (x) (Type x NumConst Num))')
+        kb.tell ('(forall (x) (Type x BoolConst Bool))')
+        kb.tell (
+            '(forall (tenv tau test then else)'
+            '        (=> (and (Type tenv test Bool) (Type tenv then tau) (Type tenv else tau))'
+            '            (Type tenv (If test then else) tau)))'
+            )
+        # rules for variable binding
+        kb.tell ('(forall (v t x) (Type (Cons (Bind v t) x) (Var v) t))')
+        kb.tell ('(forall (v t x y tenv_rest) (=> (Type tenv_rest (Var v) t) (Type (Cons (Bind x y) tenv_rest) (Var v) t)))')
+        # rule for functions
+        kb.tell (
+            '(forall (tenv var body t1 t2)'
+            '   (=> (Type (Cons (Bind var t1) tenv) body t2)'
+            '       (Type tenv (Fun var body) (Arrow t1 t2))))'
+            )
+        # rule for application
+        kb.tell (
+            '(forall (tenv fun arg t1 t2)'
+            '   (=> (and (Type tenv fun (Arrow t1 t2)) (Type tenv arg t1))'
+            '       (Type tenv (App fun arg) t2)))'
+            )
+        kb.dump()
+        if False:
+            kb.ask ('(Type Nil BoolConst Bool)')
+            kb.ask ('(Type Nil (If BoolConst NumConst NumConst) Num)')
+            kb.ask ('(Type Nil (If BoolConst NumConst NumConst) Num)')
+            kb.ask ('(Type Nil (If BoolConst NumConst BoolConst) Num)')
+            kb.ask ('(forall (t) (Type Nil BoolConst t))')
+            kb.ask ('(forall (t) (Type Nil (If BoolConst NumConst NumConst) t))')
+            # enumerate all expressions of type Num
+            kb.ask ('(forall (t) (Type Nil t Num))')
+            # test out function application, variable binding
+            kb.ask ('(forall (t) (Type (Cons (Bind W Bool) (Cons (Bind V Num) Nil)) (Var V) t))')
+            kb.ask ('(forall (t) (Type Nil (Fun X (If (Var X) NumConst NumConst)) t))')
+            kb.ask ('(forall (t) (Type Nil (App (Fun X (If (Var X) NumConst NumConst)) BoolConst) t))')
+            # infer type of (lambda (x) x)
+            kb.ask ('(forall (t) (Type Nil (Fun X (Var X)) t))')
+            # NO
+            kb.ask ('(Type Nil (Fun X (App (Var X) (Var X))) Num)')
+            # this will fail because we left *in* the occurs check
+            kb.ask ('(forall (t) (Type Nil (Fun X (App (Var X) (Var X))) t))')
+        kb.ask ('(forall (t)'
+                '   (Type Nil (App (Fun Id (If (App (Var Id) BoolConst)'
+                '                              (App (Var Id) BoolConst)'
+                '                              (App (Var Id) BoolConst)))'
+                '                   (Fun X (Var X)))'
+                '              t))')
 
-# from wikipedia
-def test11():
-    kb = knowledge_base()
-    kb.tell ('(forall (x y z) (=> (and (Parent_Child z x) (Parent_Child z y)) (Sibling x y)))')
-    kb.tell ('(forall (x y) (=> (Father_Child x y) (Parent_Child x y)))')
-    kb.tell ('(forall (x y) (=> (Mother_Child x y) (Parent_Child x y)))')
-    kb.tell ('(Mother_Child Trude Sally)')
-    kb.tell ('(Father_Child Tom Sally)')
-    kb.tell ('(Father_Child Tom Erica)')
-    kb.tell ('(Father_Child Mike Tom)')
-    #linear_resolution (kb, '(Sibling Sally Erica)')
-    linear_resolution (kb, '(forall (f c) (Father_Child f c))')
+    @staticmethod
+    def test14_FC():
+        kb = horn_knowledge_base()
+        kb.tell ('(forall (x y z) (=> (and (American x) (Weapon y) (Sells x y z) (Hostile z)) (Criminal x)))')
+        kb.tell ('(American West)')
+        kb.tell ('(exists (x) (and (Owns Nono x) (Missile x)))')
+        kb.tell ('(forall (x) (=> (Missile x) (Weapon x)))')
+        kb.tell ('(forall (x) (=> (and (Missile x) (Owns Nono x)) (Sells West x Nono)))')
+        kb.tell ('(forall (x) (=> (Enemy x America) (Hostile x)))')
+        kb.tell ('(Enemy Nono America)')
+        kb.dump()
+        
+        
+        FOL_FC_ASK(kb, ('Criminal','West'))
 
-def test12():
-    kb = horn_knowledge_base()
-    kb.tell ('(forall (a l1 l2 l3) (=> (Append l1 l2 l3) (Append (Cons a l1) l2 (Cons a l3))))')
-    kb.tell ('(forall (l1 l2) (Append Nil l1 l1))')
-    #linear_resolution (kb, '(forall (z) (Append (Cons A (Cons B Nil)) (Cons B (Cons C Nil)) z))')
-    kb.ask ('(forall (u v) (Append u v (Cons A (Cons B (Cons C (Cons D Nil))))))')
-    #kb.sld_resolution ('(forall (u v) (Append u v (Cons A Nil)))')
-
-def test13():
-    # PLAI chapter 33 - Type Inference
-    kb = horn_knowledge_base()
-    kb.tell ('(forall (x) (Type x NumConst Num))')
-    kb.tell ('(forall (x) (Type x BoolConst Bool))')
-    kb.tell (
-        '(forall (tenv tau test then else)'
-        '        (=> (and (Type tenv test Bool) (Type tenv then tau) (Type tenv else tau))'
-        '            (Type tenv (If test then else) tau)))'
-        )
-    # rules for variable binding
-    kb.tell ('(forall (v t x) (Type (Cons (Bind v t) x) (Var v) t))')
-    kb.tell ('(forall (v t x y tenv_rest) (=> (Type tenv_rest (Var v) t) (Type (Cons (Bind x y) tenv_rest) (Var v) t)))')
-    # rule for functions
-    kb.tell (
-        '(forall (tenv var body t1 t2)'
-        '   (=> (Type (Cons (Bind var t1) tenv) body t2)'
-        '       (Type tenv (Fun var body) (Arrow t1 t2))))'
-        )
-    # rule for application
-    kb.tell (
-        '(forall (tenv fun arg t1 t2)'
-        '   (=> (and (Type tenv fun (Arrow t1 t2)) (Type tenv arg t1))'
-        '       (Type tenv (App fun arg) t2)))'
-        )
-    kb.dump()
-    if False:
-        kb.ask ('(Type Nil BoolConst Bool)')
-        kb.ask ('(Type Nil (If BoolConst NumConst NumConst) Num)')
-        kb.ask ('(Type Nil (If BoolConst NumConst NumConst) Num)')
-        kb.ask ('(Type Nil (If BoolConst NumConst BoolConst) Num)')
-        kb.ask ('(forall (t) (Type Nil BoolConst t))')
-        kb.ask ('(forall (t) (Type Nil (If BoolConst NumConst NumConst) t))')
-        # enumerate all expressions of type Num
-        kb.ask ('(forall (t) (Type Nil t Num))')
-        # test out function application, variable binding
-        kb.ask ('(forall (t) (Type (Cons (Bind W Bool) (Cons (Bind V Num) Nil)) (Var V) t))')
-        kb.ask ('(forall (t) (Type Nil (Fun X (If (Var X) NumConst NumConst)) t))')
-        kb.ask ('(forall (t) (Type Nil (App (Fun X (If (Var X) NumConst NumConst)) BoolConst) t))')
-        # infer type of (lambda (x) x)
-        kb.ask ('(forall (t) (Type Nil (Fun X (Var X)) t))')
-        # NO
-        kb.ask ('(Type Nil (Fun X (App (Var X) (Var X))) Num)')
-        # this will fail because we left *in* the occurs check
-        kb.ask ('(forall (t) (Type Nil (Fun X (App (Var X) (Var X))) t))')
-    kb.ask ('(forall (t)'
-            '   (Type Nil (App (Fun Id (If (App (Var Id) BoolConst)'
-            '                              (App (Var Id) BoolConst)'
-            '                              (App (Var Id) BoolConst)))'
-            '                   (Fun X (Var X)))'
-            '              t))')
+    
+    @staticmethod
+    def test15_BC():
+        kb = horn_knowledge_base()
+        kb.tell ('(forall (x y z) (=> (and (American x) (Weapon y) (Sells x y z) (Hostile z)) (Criminal x)))')
+        kb.tell ('(American West)')
+        kb.tell ('(exists (x) (and (Owns Nono x) (Missile x)))')
+        kb.tell ('(forall (x) (=> (Missile x) (Weapon x)))')
+        kb.tell ('(forall (x) (=> (and (Missile x) (Owns Nono x)) (Sells West x Nono)))')
+        kb.tell ('(forall (x) (=> (Enemy x America) (Hostile x)))')
+        kb.tell ('(Enemy Nono America)')
+        kb.dump()
+        print
+    
+        result=FOL_BC_ASK(kb, [('Criminal','West')])
+        print "\n\nFOL-Backward Chaining :\nThe system is %s satisfied \nanswers=%s " % ("" if result["OK"] else "not",str(result["answers"]))
+    
+    @staticmethod
+    def test16_otter():
+        kb = knowledge_base()
+        kb.tell ('(forall (x y z) (=> (and (American x) (Weapon y) (Sells x y z) (Hostile z)) (Criminal x)))')
+        kb.tell ('(American West)')
+        kb.tell ('(exists (x) (and (Owns Nono x) (Missile x)))')
+        kb.tell ('(forall (x) (=> (Missile x) (Weapon x)))')
+        kb.tell ('(forall (x) (=> (and (Missile x) (Owns Nono x)) (Sells West x Nono)))')
+        kb.tell ('(forall (x) (=> (Enemy x America) (Hostile x)))')
+        kb.tell ('(Enemy Nono America)')
+        kb.dump()
+        
+        result=thm_provers("(Criminal West)",kb)
+        
 
 
 if __name__ == '__main__':
     import sys
-    sys.setrecursionlimit (10000)
-    #test3()
-    #test4()
-    #test5()
-    #test6()
-    #test7()
-    #test8()
-    # something goes weird with this test and variable substitution
-    #test9()
-    #test10()
-    #test11()
-    #test12()
-    test13()
+    sys.setrecursionlimit (100)
+    #Test.test2_to_cnf()
+    #Test.test3_sld_resolution()
+    #Test.test4_linear_resolution()
+    #Test.test5_linear_resolution()
+    #Test.test6_linear_resolution()
+    #Test.test7_linear_resolution()
+    #Test.test8_towers_of_hanoi()
+    #something goes weird with this test and variable substitution
+    #Test.test9_ask()
+    #Test.test11_linear_resolution()
+    #Test.test12_ask()
+    #Test.test13_ask()
+    #Test.test14_FC()
+    #Test.test15_BC()
+    Test.test16_otter()
