@@ -1,0 +1,720 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0061)http://code.google.com/codejam/contest/1460488/dashboard#s=p2 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="refresh" content="172795">
+  
+  <title>
+    Dashboard - Qualification Round 2012 - Google Code Jam
+  </title>
+  <link rel="stylesheet" type="text/css" href="./Problem C_files/base.css">
+  <link rel="stylesheet" type="text/css" href="./Problem C_files/dashboard.css">
+  
+  <script type="text/javascript" async="" src="./Problem C_files/ga.js"></script><script type="text/javascript" src="./Problem C_files/Dashboard_en.js"></script>
+  
+  <script type="text/javascript"><!--
+    /**
+     * Initializes GCJ.problems and GCJ.io from Django parameters.
+     * Also initializes the two user specific variables GCJ.isQualified and
+     * GCJ.lastClarSeenTime.
+     * This is the first function called once from GCJ.main().
+     */
+    GCJ.initContestVariables = function () {
+      // Convert Django's 'contest' to 'GCJ.contest'.
+      GCJ.contest.id = "1460488";
+      GCJ.contest.name = "Qualification Round 2012";
+      GCJ.contest.version = 0;
+      
+        GCJ.contest.version = 2;
+      
+      GCJ.contest.start_int = 1334358000;
+      GCJ.contest.running = false;
+      GCJ.base_url = '/codejam/contest';
+      GCJ.scoreboardLink = ('<a target="new"' +
+                            'href="scoreboard?c=1460488"' +
+                            '>Contest scoreboard</a>');
+    }
+
+    /**
+     * Returns the current splash page.
+     */
+    GCJ.getSplashPage = function () {
+      return "/codejam";
+    };
+  //--></script>
+</head>
+
+<body onload="GCJ.main()">
+
+<div id="logo-div">
+  <a href="http://code.google.com/codejam/">
+    <img src="./Problem C_files/logo_image1.gif" id="logo" alt="Google Code Jam">
+  </a>
+</div>
+
+<div>
+
+<div id="dsb-page-body">
+
+<div id="left-panel">
+  <div class="v-divider"></div>
+  <div class="v-divider"></div>
+  <div class="v-divider"></div>
+  <!-- Problem Selection Panel -->
+  <div id="dsb-contest-title">Qualification Round 2012</div>
+  <hr class="dsb-hr">
+  <div id="dsb-problem-selection-area">
+    <div id="dsb-problem-selection-list" class="after-start-only" style="display: block; ">
+    <div><div id="dsb-problem-tab0" class="dsb-problem-tab-close" tabindex="0" role="button">  <div id="dsb-problem-title0" class="dynamic-link">A. Speaking in Tongues  </div></div></div><div><div id="dsb-problem-tab1" class="dsb-problem-tab-close" tabindex="0" role="button">  <div id="dsb-problem-title1" class="dynamic-link">B. Dancing With the Googlers  </div></div></div><div><div id="dsb-problem-tab2" class="dsb-problem-tab-open" tabindex="0" role="button">  <div id="dsb-problem-title2" class="dynamic-link">C. Recycled Numbers  </div></div></div><div><div id="dsb-problem-tab3" class="dsb-problem-tab-close" tabindex="0" role="button">  <div id="dsb-problem-title3" class="dynamic-link">D. Hall of Mirrors  </div></div></div></div>
+    <div id="dsb-problem-selection-list-pre-contest" class="dsb-pre-contest-text before-start-only" style="display: none; ">
+      
+      The list of problems will appear here after the contest loads.
+      
+    </div>
+  </div>
+  <hr class="dsb-hr">
+  <div class="v-divider"></div>
+  <div class="v-divider"></div>
+  <div id="dsb-analysis-button" class="dsb-anal-tab-close" tabindex="0" role="button" style="display: none; ">
+    <div class="dynamic-link">
+       <div id="dsb-analysis-tab">
+         Contest Analysis
+       </div>
+    </div>
+  </div>
+  <div id="dsb-ask-question-area">
+    <div id="dsb-ask-question-button" class="dsb-clar-tab-close" tabindex="0" role="button" style="display: block; ">
+      <div class="dynamic-link">
+        <div id="dsb-ask-question-tab">
+          Ask a question
+        </div>
+      </div>
+    </div>
+    <div class="dsb-pre-contest-text before-start-only" style="display: none; ">
+      
+      You'll be able to ask questions about the problems, and view your
+      submissions, here.
+      
+    </div>
+  </div>
+  <div id="dsb-submissions-button" class="dsb-submissions-tab-close" tabindex="0" role="button" style="display: block; ">
+    <div class="dynamic-link">
+      <div id="dsb-submissions-tab">
+        View my submissions
+      </div>
+    </div>
+  </div>
+  <div class="v-divider"></div>
+  <div class="v-divider"></div>
+  <div class="dsb-mini-tab-wrapper">
+  <div id="dsb-status-div-container">
+    <div id="dsb-status-header-div" onmouseover="this.style.cursor=&#39;pointer&#39;" onclick="GCJ.toggleStatusPanelVisibility();" style="cursor: pointer; ">
+      <img id="dsb-status-panel-button" src="./Problem C_files/minus.gif">
+      &nbsp; Submissions
+    </div>
+    <div id="dsb-status-tab" class="after-start-only" style="display: block; ">
+      <div id="dsb-status-tab-loading-text" class="dsb-pre-contest-text" style="display: none; ">
+        Loading...
+      </div>
+    <div id="dsb-status-tab-problems" style="display: block; "><div><div id="dsb-problem-status-wrapper0" class="problem-status-wrapper">  <div class="dsb-status-problem-title">Speaking in Tongues</div><div><table class="problemStatus">  <tbody>    <tr class="inputSetStatus">      <td id="inputName0_0" class="inputName">15pt</td>      <td class="status">        <div id="selfStat0_0" class="dsb-mini-status-non-highlight">No submissions</div>        <div id="globalStat0_0" class="globalStat" style="display: block; "><b>98/263 users</b> correct (37%)</div>      </td>    </tr>  </tbody></table></div></div></div><div><div id="dsb-problem-status-wrapper1" class="problem-status-wrapper">  <div class="dsb-status-problem-title">Dancing With the Googlers</div><div><table class="problemStatus">  <tbody>    <tr class="inputSetStatus">      <td id="inputName1_0" class="inputName">10pt</td>      <td class="status">        <div id="selfStat1_0" class="dsb-mini-status-non-highlight">No submissions</div>        <div id="globalStat1_0" class="globalStat" style="display: block; "><b>6/10 users</b> correct (60%)</div>      </td>    </tr>  </tbody></table></div><div><table class="problemStatus">  <tbody>    <tr class="inputSetStatus">      <td id="inputName1_1" class="inputName">10pt</td>      <td class="status">        <div id="selfStat1_1" class="dsb-mini-status-non-highlight">No submissions</div>        <div id="globalStat1_1" class="globalStat" style="display: none; "></div>      </td>    </tr>  </tbody></table></div></div></div><div><div id="dsb-problem-status-wrapper2" class="problem-status-wrapper">  <div class="dsb-status-problem-title">Recycled Numbers</div><div><table class="problemStatus">  <tbody>    <tr class="inputSetStatus">      <td id="inputName2_0" class="inputName">10pt</td>      <td class="status">        <div id="selfStat2_0" class="dsb-mini-status-non-highlight">No submissions</div>        <div id="globalStat2_0" class="globalStat" style="display: block; "><b>2/4 users</b> correct (50%)</div>      </td>    </tr>  </tbody></table></div><div><table class="problemStatus">  <tbody>    <tr class="inputSetStatus">      <td id="inputName2_1" class="inputName">15pt</td>      <td class="status">        <div id="selfStat2_1" class="dsb-mini-status-non-highlight">No submissions</div>        <div id="globalStat2_1" class="globalStat" style="display: none; "></div>      </td>    </tr>  </tbody></table></div></div></div><div><div id="dsb-problem-status-wrapper3" class="problem-status-wrapper">  <div class="dsb-status-problem-title">Hall of Mirrors</div><div><table class="problemStatus">  <tbody>    <tr class="inputSetStatus">      <td id="inputName3_0" class="inputName">15pt</td>      <td class="status">        <div id="selfStat3_0" class="dsb-mini-status-non-highlight">No submissions</div>        <div id="globalStat3_0" class="globalStat" style="display: block; "><b>0/1 users</b> correct (0%)</div>      </td>    </tr>  </tbody></table></div><div><table class="problemStatus">  <tbody>    <tr class="inputSetStatus">      <td id="inputName3_1" class="inputName">25pt</td>      <td class="status">        <div id="selfStat3_1" class="dsb-mini-status-non-highlight">No submissions</div>        <div id="globalStat3_1" class="globalStat" style="display: none; "></div>      </td>    </tr>  </tbody></table></div></div></div></div></div>
+    <div id="dsb-status-tab-pre-contest" class="dsb-pre-contest-text before-start-only" style="display: none; ">
+      
+      Statistics about the problems will appear here.  They'll include your
+      status on each problem, and other contestants' attempts.
+      
+    </div>
+  </div>
+  </div>
+  <div class="v-divider"></div>
+  <div class="v-divider"></div>
+  <!-- Mini Scoreboard -->
+  <div class="dsb-mini-tab-wrapper">
+    <div id="dsb-scoreboard-div">
+      <div id="dsb-scoreboard-header-div" onmouseover="this.style.cursor=&#39;pointer&#39;" onclick="GCJ.toggleVisibility(
+              &#39;dsb-scoreboard-table&#39;,
+              &#39;dsb-scoreboard-panel-button&#39;,
+              &#39;/codejam/contest/static/minus.gif&#39;,
+              &#39;/codejam/contest/static/plus.gif&#39;)">
+          <img id="dsb-scoreboard-panel-button" src="./Problem C_files/minus.gif">
+          &nbsp; Top Scores
+      </div>
+      <div id="dsb-scoreboard-table-wrap" class="after-start-only" style="display: block; "><table id="dsb-scoreboard-table"><tbody><tr class="dsb-scoreboard-row-even" id="sbRow_0" style="display: block; "><td class="dsb-name-td" id="sbName_0">ir5</td><td class="dsb-score-td" id="sbScore_0">25</td></tr><tr class="dsb-scoreboard-row-odd" id="sbRow_1" style="display: block; "><td class="dsb-name-td" id="sbName_1">adr2370</td><td class="dsb-score-td" id="sbScore_1">20</td></tr><tr class="dsb-scoreboard-row-even" id="sbRow_2" style="display: block; "><td class="dsb-name-td" id="sbName_2">hos.lyric</td><td class="dsb-score-td" id="sbScore_2">20</td></tr><tr class="dsb-scoreboard-row-odd" id="sbRow_3" style="display: block; "><td class="dsb-name-td" id="sbName_3">wcao</td><td class="dsb-score-td" id="sbScore_3">20</td></tr><tr class="dsb-scoreboard-row-even" id="sbRow_4" style="display: block; "><td class="dsb-name-td" id="sbName_4">neal.wu</td><td class="dsb-score-td" id="sbScore_4">20</td></tr><tr class="dsb-scoreboard-row-odd" id="sbRow_5" style="display: block; "><td class="dsb-name-td" id="sbName_5">chEEtah</td><td class="dsb-score-td" id="sbScore_5">15</td></tr><tr class="dsb-scoreboard-row-even" id="sbRow_6" style="display: block; "><td class="dsb-name-td" id="sbName_6">royf</td><td class="dsb-score-td" id="sbScore_6">15</td></tr><tr class="dsb-scoreboard-row-odd" id="sbRow_7" style="display: block; "><td class="dsb-name-td" id="sbName_7">fswenton</td><td class="dsb-score-td" id="sbScore_7">15</td></tr><tr class="dsb-scoreboard-row-even" id="sbRow_8" style="display: block; "><td class="dsb-name-td" id="sbName_8">rmmh</td><td class="dsb-score-td" id="sbScore_8">15</td></tr><tr class="dsb-scoreboard-row-odd" id="sbRow_9" style="display: block; "><td class="dsb-name-td" id="sbName_9">lwehrstedt</td><td class="dsb-score-td" id="sbScore_9">15</td></tr></tbody></table></div>
+      <div id="dsb-scoreboard-tab-pre-contest" class="dsb-pre-contest-text before-start-only" style="display: none; ">
+        
+        The scores of the top 10 contestants will appear here, with a link to
+        the contest's scoreboard.
+        
+      </div>
+      <div class="dsb-mini-tab-link">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="right-panel">
+  <div id="dsb-status-msg-wrapper" class="dsb-status-msg-wrapper" role="alert" style="visibility: hidden; ">
+    <div id="dsb-status-msg" class="dsb-status-msg">
+      <span id="dsb-status-msg-text">Loading problem information...</span>
+      <span id="dsb-view-it-link" style="display: none; ">View it.</span>
+    </div>
+  </div>
+
+  <div id="dsb-contest-title-bar">
+    <div id="dsb-rank-etc">
+      <span id="dsb-time-remaining">
+        <span id="dsb-time-remaining-before" class="before-start-only-inline" style="display: none; ">
+          Contest begins in:
+        </span>
+        <span id="dsb-time-remaining-after" class="after-start-only-inline" style="display: inline; ">
+          Time Remaining:
+        </span>
+        <span id="contestTimer">1 day 42min 03sec</span>
+      </span>
+      <span class="after-start-only-inline" style="display: inline; ">
+        <span id="dsb-current-rank-div">
+          Rank: <span id="dsb-current-rank-span">112</span>
+        </span>
+        <span id="dsb-current-score-div">
+          Score: <span id="dsb-current-score-span">0</span>
+        </span>
+      </span>
+    </div>
+    <div id="dsb-title-links"><a target="new" href="http://code.google.com/codejam/contest/1460488/scoreboard?c=1460488">Contest scoreboard</a> | <b>assem.ch@gmail.com</b> | <a href="http://code.google.com/_ah/logout?continue=https://www.google.com/accounts/Logout%3Fcontinue%3Dhttps://appengine.google.com/_ah/logout%253Fcontinue%253Dhttp://code.google.com/codejam/contest%26service%3Dah">Sign out</a></div>
+  </div>
+  <!-- Problem Statement -->
+  <div id="main-panel-border" class="dsb-blue-border">
+  <div id="dsb-border-inner">
+   <!-- Problem Title -->
+    <h3 id="dsb-problem-title-area">
+      <span id="dsb-problem-title-div-pre-contest" class="problem-title before-start-only" style="display: none; ">
+        <span style="color:#666">Problem.</span>
+        The problem's name goes here.
+      </span>
+      <span id="dsb-problem-title-div" class="problem-title after-start-only" style="display: block; "><span style="color:#666">Problem C.</span> Recycled Numbers</span>
+    </h3>
+
+    <div class="dsb-content-pages before-start-only" style="display: none; ">
+      
+      We're now waiting for the contest to start.  Once the contest starts,
+      the problems will automatically load, and Problem A will display here.
+      You don't have to solve that problem first; you will be able to select
+      another problem from the list to the left.  Once you've solved one
+      problem, don't forget to work on the others!
+      
+    </div>
+
+    <div id="dsb-problem-pages"><div id="dsb-problem-page0" class="dsb-content-pages" style="display: none; "><!-- Problem Input File Selection --><div class="dsb-input-panel-text" id="dsb-input-panel-text0"><span>Confused?  Read the <a href="http://code.google.com/codejam/quickstart.html" target="_blank">quick-start guide</a>.</span></div><table><tbody id="dsb-input-form-table0"><tr><td class="dsb-input-table-description">Small input<br>15 points</td><td class="dsb-input-table-linktd"><div id="dsb-action-box-wrap0-0" class=""><div id="dsb-input-wrapper0-0" class="dsb-input-wrapper" style="display: inline; "><button class="dsb-input-start-button" id="dsb-input-start-button0-0" style="display: inline; ">Solve A-small</button><span class="dsb-input-link-span" id="dsb-input-link-plain0-0" style="display: none; "><img class="dsb-input-link-img" src="./Problem C_files/file.gif"><span class="dsb-input-link-text" id="dsb-input-link-plain-text0-0">Download A-small.in</span></span></div><span class="dsb-input-table-caption" id="dsb-input-table-caption0-0" style="display: block; ">You may try multiple times, with penalties for wrong submissions.</span><span class="dsb-input-table-caption" id="dsb-resubmit-caption0-0" style="display: none; ">Your submission was received. You can still <span class="dsb-input-link-text" id="dsb-resubmit-link0-0">resubmit</span> for <span id="dsb-resubmit-timer0-0"></span> minutes.<br>Only your last submission counts.</span><div><div class="dsb-submit-form-div" id="dsb-submit-form-div0-0" style="display: none; ">temp</div></div></div></td></tr></tbody></table><!-- Problem Statement --><div id="dsb-problem-content-div0" class="dsb-problem-content-div" style="width: 40em; "><h3>Problem</h3>
+
+<p>
+We have come up with the best possible language here at Google, called Googlerese. To translate text into Googlerese, we take any message and replace each English letter with another English letter. This mapping is <i>one-to-one</i> and <i>onto</i>, which means that the same input letter always gets replaced with the same output letter, and different input letters always get replaced with different output letters. A letter may be replaced by itself. Spaces are left as-is.
+</p>
+
+<p>
+For example (and here is a hint!), our awesome translation algorithm includes the following three mappings: 'a' -&gt; 'y', 'o' -&gt; 'e', and 'z' -&gt; 'q'. This means that "a zoo" will become "y qee".
+</p>
+
+<p>
+Googlerese is based on the best possible replacement mapping, and we will never change it. It will always be the same. In every test case. We will not tell you the rest of our mapping because that would make the problem too easy, but there are a few examples below that may help.</p>
+
+<p>
+Given some text in Googlerese, can you translate it to back to normal text?
+</p>
+
+<h3>Solving this problem</h3>
+<p>
+Usually, Google Code Jam problems have 1 Small input and 1 Large input.  This problem has only <b>1 Small input</b>.  Once you have solved the Small input, you have finished solving this problem.
+</p>
+
+<h3>Input</h3>
+<p>
+The first line of the input gives the number of test cases, <b>T</b>. <b>T</b> test cases follow, one per line.
+</p>
+
+<p>
+Each line consists of a string <b>G</b> in Googlerese, made up of one or more words containing the letters 'a' - 'z'. There will be exactly one space (' ') character between consecutive words and no spaces at the beginning or at the end of any line.
+</p>
+
+
+<h3>Output</h3>
+<p>
+For each test case, output one line containing "Case #<b>X</b>: <b>S</b>" where <b>X</b> is the case number and <b>S</b> is the string that becomes <b>G</b> in Googlerese.
+</p>
+
+<h3>Limits</h3>
+<p>
+1 ≤ <b>T</b> ≤ 30.<br>
+<b>G</b> contains at most 100 characters.<br>
+None of the text is guaranteed to be valid English.<br>
+</p>
+
+<h3>Sample</h3>
+
+<div class="problem-io-wrapper">
+<table>
+<tbody><tr>
+<td><span class="io-table-header">Input</span></td>
+</tr>
+<tr><td>
+<code>
+3<br>
+ejp mysljylc kd kxveddknmc re jsicpdrysi<br>
+rbcpc ypc rtcsra dkh wyfrepkym veddknkmkrkcd<br>
+de kr kd eoya kw aej tysr re ujdr lkgc jv<br>
+</code>
+</td></tr>
+<tr><td><br><hr><br></td></tr>
+<tr><td>
+<span class="io-table-header">Output</span>
+</td></tr>
+<tr><td>
+<code>
+Case #1: our language is impossible to understand<br>
+Case #2: there are twenty six factorial possibilities<br>
+Case #3: so it is okay if you want to just give up<br>
+</code>
+</td></tr>
+</tbody></table>
+</div></div></div><div id="dsb-problem-page1" class="dsb-content-pages" style="display: none; "><!-- Problem Input File Selection --><div class="dsb-input-panel-text" id="dsb-input-panel-text1"><span>Confused?  Read the <a href="http://code.google.com/codejam/quickstart.html" target="_blank">quick-start guide</a>.</span></div><table><tbody id="dsb-input-form-table1"><tr><td class="dsb-input-table-description">Small input<br>10 points</td><td class="dsb-input-table-linktd"><div id="dsb-action-box-wrap1-0" class=""><div id="dsb-input-wrapper1-0" class="dsb-input-wrapper" style="display: inline; "><button class="dsb-input-start-button" id="dsb-input-start-button1-0" style="display: inline; ">Solve B-small</button><span class="dsb-input-link-span" id="dsb-input-link-plain1-0" style="display: none; "><img class="dsb-input-link-img" src="./Problem C_files/file.gif"><span class="dsb-input-link-text" id="dsb-input-link-plain-text1-0">Download B-small.in</span></span></div><span class="dsb-input-table-caption" id="dsb-input-table-caption1-0" style="display: block; ">You may try multiple times, with penalties for wrong submissions.</span><span class="dsb-input-table-caption" id="dsb-resubmit-caption1-0" style="display: none; ">Your submission was received. You can still <span class="dsb-input-link-text" id="dsb-resubmit-link1-0">resubmit</span> for <span id="dsb-resubmit-timer1-0"></span> minutes.<br>Only your last submission counts.</span><div><div class="dsb-submit-form-div" id="dsb-submit-form-div1-0" style="display: none; ">temp</div></div></div></td></tr><tr><td class="dsb-input-table-description">Large input<br>10 points</td><td class="dsb-input-table-linktd"><div id="dsb-action-box-wrap1-1" class=""><div id="dsb-input-wrapper1-1" class="dsb-input-wrapper" style="display: none; "><button class="dsb-input-start-button" id="dsb-input-start-button1-1" style="display: inline; ">Solve B-large</button><span class="dsb-input-link-span" id="dsb-input-link-plain1-1" style="display: none; "><img class="dsb-input-link-img" src="./Problem C_files/file.gif"><span class="dsb-input-link-text" id="dsb-input-link-plain-text1-1"></span></span></div><span class="dsb-input-table-caption" id="dsb-input-table-caption1-1" style="display: block; ">You must solve the small input first.<br>You will have 8 minutes to solve 1 input file. (Judged after contest.)</span><span class="dsb-input-table-caption" id="dsb-resubmit-caption1-1" style="display: none; ">Your submission was received. You can still <span class="dsb-input-link-text" id="dsb-resubmit-link1-1">resubmit</span> for <span id="dsb-resubmit-timer1-1"></span> minutes.<br>Only your last submission counts.</span><div><div class="dsb-submit-form-div" id="dsb-submit-form-div1-1" style="display: none; ">temp</div></div></div></td></tr></tbody></table><!-- Problem Statement --><div id="dsb-problem-content-div1" class="dsb-problem-content-div" style="width: 40em; "><h3>Problem</h3>
+
+<p>
+You're watching a show where Googlers (employees of Google) dance, and then each dancer is given a <i>triplet of scores</i> by three judges.  Each triplet of scores consists of three integer scores from 0 to 10 inclusive.  The judges have very similar standards, so it's <i>surprising</i> if a triplet of scores contains two scores that are 2 apart.  No triplet of scores contains scores that are more than 2 apart.
+</p>
+<p>
+For example: (8, 8, 8) and (7, 8, 7) are not surprising.  (6, 7, 8) and (6, 8, 8) are surprising.  (7, 6, 9) will never happen.
+</p>
+<p>
+The <i>total points</i> for a Googler is the sum of the three scores in that Googler's triplet of scores.  The <i>best result</i> for a Googler is the maximum of the three scores in that Googler's triplet of scores.  Given the total points for each Googler, as well as the number of surprising triplets of scores, what is the maximum number of Googlers that could have had a best result of at least <b>p</b>?
+</p>
+<p>
+For example, suppose there were 6 Googlers, and they had the following total points:
+<code>29, 20, 8, 18, 18, 21</code>.  You remember that there were 2 surprising triplets of scores, and you want to know how many Googlers could have gotten a best result of 8 or better.
+</p>
+<p>
+With those total points, and knowing that two of the triplets were surprising, the triplets of scores could have been:
+</p><pre>10 9 10
+6 6 8 (*)
+2 3 3
+6 6 6
+6 6 6
+6 7 8 (*)
+</pre>
+The cases marked with a (*) are the surprising cases.  This gives us 3 Googlers who got at least one score of 8 or better.  There's no series of triplets of scores that would give us a higher number than 3, so the answer is 3.
+<p></p>
+
+
+<h3>Input</h3>
+<p>
+The first line of the input gives the number of test cases, <b>T</b>.  <b>T</b> test cases follow.  Each test case consists of a single line containing integers separated by single spaces.  The first integer will be <b>N</b>, the number of Googlers, and the second integer will be <b>S</b>, the number of surprising triplets of scores.  The third integer will be <b>p</b>, as described above.  Next will be <b>N</b> integers <b>t<sub>i</sub></b>: the total points of the Googlers.
+</p>
+
+<h3>Output</h3>
+<p>
+For each test case, output one line containing "Case #x: y", where x is the case number (starting from 1) and y is the maximum number of Googlers who could have had a best result of greater than or equal to <b>p</b>.
+</p>
+
+<h3>Limits</h3>
+<p>
+1 ≤ <b>T</b> ≤ 100.<br>
+0 ≤ <b>S</b> ≤ N.<br>
+0 ≤ <b>p</b> ≤ 10.<br>
+0 ≤ <b>t<sub>i</sub></b> ≤ 30.<br>
+There will be at least <b>S</b> total points between 2 and 28, inclusive.<br>
+</p>
+
+<h4>Small dataset</h4>
+<p>
+1 ≤ <b>N</b> ≤ 3.<br>
+</p>
+
+<h4>Large dataset</h4>
+<p>
+1 ≤ <b>N</b> ≤ 100.<br>
+</p>
+
+<h3>Sample</h3>
+<div class="problem-io-wrapper">
+<table>
+<tbody><tr>
+<td>
+<br>
+<span class="io-table-header">Input</span>
+<br>&nbsp;
+</td>
+<td>
+<br>
+<span class="io-table-header">Output</span>
+<br>&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+<code>
+4<br>
+3 1 5 15 13 11<br>
+3 0 8 23 22 21<br>
+2 1 1 8 0<br>
+6 2 8 29 20 8 18 18 21<br>
+</code>
+</td>
+<td>
+<code>
+Case #1: 3<br>
+Case #2: 2<br>
+Case #3: 1<br>
+Case #4: 3<br>
+<br>
+</code>
+</td></tr></tbody></table>
+</div></div></div><div id="dsb-problem-page2" class="dsb-content-pages" style="display: block; "><!-- Problem Input File Selection --><div class="dsb-input-panel-text" id="dsb-input-panel-text2"><span>Confused?  Read the <a href="http://code.google.com/codejam/quickstart.html" target="_blank">quick-start guide</a>.</span></div><table><tbody id="dsb-input-form-table2"><tr><td class="dsb-input-table-description">Small input<br>10 points</td><td class="dsb-input-table-linktd"><div id="dsb-action-box-wrap2-0" class=""><div id="dsb-input-wrapper2-0" class="dsb-input-wrapper" style="display: inline; "><button class="dsb-input-start-button" id="dsb-input-start-button2-0" style="display: inline; ">Solve C-small</button><span class="dsb-input-link-span" id="dsb-input-link-plain2-0" style="display: none; "><img class="dsb-input-link-img" src="./Problem C_files/file.gif"><span class="dsb-input-link-text" id="dsb-input-link-plain-text2-0">Download C-small.in</span></span></div><span class="dsb-input-table-caption" id="dsb-input-table-caption2-0" style="display: block; ">You may try multiple times, with penalties for wrong submissions.</span><span class="dsb-input-table-caption" id="dsb-resubmit-caption2-0" style="display: none; ">Your submission was received. You can still <span class="dsb-input-link-text" id="dsb-resubmit-link2-0">resubmit</span> for <span id="dsb-resubmit-timer2-0"></span> minutes.<br>Only your last submission counts.</span><div><div class="dsb-submit-form-div" id="dsb-submit-form-div2-0" style="display: none; ">temp</div></div></div></td></tr><tr><td class="dsb-input-table-description">Large input<br>15 points</td><td class="dsb-input-table-linktd"><div id="dsb-action-box-wrap2-1" class=""><div id="dsb-input-wrapper2-1" class="dsb-input-wrapper" style="display: none; "><button class="dsb-input-start-button" id="dsb-input-start-button2-1" style="display: inline; ">Solve C-large</button><span class="dsb-input-link-span" id="dsb-input-link-plain2-1" style="display: none; "><img class="dsb-input-link-img" src="./Problem C_files/file.gif"><span class="dsb-input-link-text" id="dsb-input-link-plain-text2-1"></span></span></div><span class="dsb-input-table-caption" id="dsb-input-table-caption2-1" style="display: block; ">You must solve the small input first.<br>You will have 8 minutes to solve 1 input file. (Judged after contest.)</span><span class="dsb-input-table-caption" id="dsb-resubmit-caption2-1" style="display: none; ">Your submission was received. You can still <span class="dsb-input-link-text" id="dsb-resubmit-link2-1">resubmit</span> for <span id="dsb-resubmit-timer2-1"></span> minutes.<br>Only your last submission counts.</span><div><div class="dsb-submit-form-div" id="dsb-submit-form-div2-1" style="display: none; ">temp</div></div></div></td></tr></tbody></table><!-- Problem Statement --><div id="dsb-problem-content-div2" class="dsb-problem-content-div" style="width: 40em; "><h3>Problem</h3>
+<p>
+Do you ever become frustrated with television because you keep seeing the same things, recycled over and over again? Well I personally don't care about television, but I do sometimes feel that way about numbers.
+</p>
+
+<p>
+Let's say a pair of distinct positive integers (<i>n</i>, <i>m</i>) is <i>recycled</i> if you can obtain <i>m</i> by moving some digits from the back of <i>n</i> to the front without changing their order. For example, (12345, 34512) is a recycled pair since you can obtain 34512 by moving 345 from the end of 12345 to the front. Note that <i>n</i> and <i>m</i> must have the same number of digits in order to be a recycled pair.
+</p>
+
+<p>
+Given integers <b>A</b> and <b>B</b> with the same number of digits, how many distinct recycled pairs (<i>n</i>, <i>m</i>) are there with <b>A</b> ≤ <i>n</i> &lt; <i>m</i> ≤ <b>B</b>?
+</p>
+
+<h3>Input</h3>
+<p>
+The first line of the input gives the number of test cases, <b>T</b>. <b>T</b> test cases follow. Each test case consists of a single line containing the integers <b>A</b> and <b>B</b>.
+</p>
+
+<h3>Output</h3>
+<p>
+For each test case, output one line containing "Case #x: y", where x is the case number (starting from 1), and y is the number of recycled pairs (<i>n</i>, <i>m</i>) with <b>A</b> ≤ <i>n</i> &lt; <i>m</i> ≤ <b>B</b>.
+</p>
+
+<h3>Limits</h3>
+<p>
+1 ≤ <b>T</b> ≤ 50.<br>
+<b>A</b> and <b>B</b> have the same number of digits.
+</p>
+
+<h4>Small dataset</h4>
+<p>
+1 ≤ <b>A</b> ≤ <b>B</b> ≤ 1000.
+</p>
+
+<h4>Large dataset</h4>
+<p>
+1 ≤ <b>A</b> ≤ <b>B</b> ≤ 2000000.
+</p>
+
+<h3>Sample</h3>
+<div class="problem-io-wrapper">
+<table>
+<tbody><tr>
+<td>
+<br>
+<span class="io-table-header">Input</span>
+<br>&nbsp;
+</td>
+<td>
+<br>
+<span class="io-table-header">Output</span>
+<br>&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+<code>
+4<br>
+1 9<br>
+10 40<br>
+100 500<br>
+1111 2222<br>
+</code>
+</td>
+<td>
+<code>
+Case #1: 0<br>
+Case #2: 3<br>
+Case #3: 156<br>
+Case #4: 287<br>
+<br>
+</code>
+</td></tr></tbody></table>
+</div></div></div><div id="dsb-problem-page3" class="dsb-content-pages" style="display: none; "><!-- Problem Input File Selection --><div class="dsb-input-panel-text" id="dsb-input-panel-text3"><span>Confused?  Read the <a href="http://code.google.com/codejam/quickstart.html" target="_blank">quick-start guide</a>.</span></div><table><tbody id="dsb-input-form-table3"><tr><td class="dsb-input-table-description">Small input<br>15 points</td><td class="dsb-input-table-linktd"><div id="dsb-action-box-wrap3-0" class=""><div id="dsb-input-wrapper3-0" class="dsb-input-wrapper" style="display: inline; "><button class="dsb-input-start-button" id="dsb-input-start-button3-0" style="display: inline; ">Solve D-small</button><span class="dsb-input-link-span" id="dsb-input-link-plain3-0" style="display: none; "><img class="dsb-input-link-img" src="./Problem C_files/file.gif"><span class="dsb-input-link-text" id="dsb-input-link-plain-text3-0">Download D-small.in</span></span></div><span class="dsb-input-table-caption" id="dsb-input-table-caption3-0" style="display: block; ">You may try multiple times, with penalties for wrong submissions.</span><span class="dsb-input-table-caption" id="dsb-resubmit-caption3-0" style="display: none; ">Your submission was received. You can still <span class="dsb-input-link-text" id="dsb-resubmit-link3-0">resubmit</span> for <span id="dsb-resubmit-timer3-0"></span> minutes.<br>Only your last submission counts.</span><div><div class="dsb-submit-form-div" id="dsb-submit-form-div3-0" style="display: none; ">temp</div></div></div></td></tr><tr><td class="dsb-input-table-description">Large input<br>25 points</td><td class="dsb-input-table-linktd"><div id="dsb-action-box-wrap3-1" class=""><div id="dsb-input-wrapper3-1" class="dsb-input-wrapper" style="display: none; "><button class="dsb-input-start-button" id="dsb-input-start-button3-1" style="display: inline; ">Solve D-large</button><span class="dsb-input-link-span" id="dsb-input-link-plain3-1" style="display: none; "><img class="dsb-input-link-img" src="./Problem C_files/file.gif"><span class="dsb-input-link-text" id="dsb-input-link-plain-text3-1"></span></span></div><span class="dsb-input-table-caption" id="dsb-input-table-caption3-1" style="display: block; ">You must solve the small input first.<br>You will have 8 minutes to solve 1 input file. (Judged after contest.)</span><span class="dsb-input-table-caption" id="dsb-resubmit-caption3-1" style="display: none; ">Your submission was received. You can still <span class="dsb-input-link-text" id="dsb-resubmit-link3-1">resubmit</span> for <span id="dsb-resubmit-timer3-1"></span> minutes.<br>Only your last submission counts.</span><div><div class="dsb-submit-form-div" id="dsb-submit-form-div3-1" style="display: none; ">temp</div></div></div></td></tr></tbody></table><!-- Problem Statement --><div id="dsb-problem-content-div3" class="dsb-problem-content-div" style="width: 40em; "><h3>Problem</h3>
+<p>
+You live in a 2-dimensional plane, and one of your favourite places to visit is the Hall of Mirrors.  The Hall of Mirrors is a room (a 2-dimensional room, of course) that is laid out in a grid.  Every square on the grid contains either a square mirror, empty space, or you.  You have width 0 and height 0, and you are located in the exact centre of your grid square.
+</p>
+<p>
+Despite being very small, you can see your reflection when it is reflected back to you exactly.  For example, consider the following layout, where <code>'#'</code> indicates a square mirror that completely fills its square, <code>'.'</code> indicates empty space, and the capital letter <code>'X'</code> indicates you are in the center of that square:
+</p><pre>######
+#..X.#
+#.#..#
+#...##
+######
+</pre>
+If you look straight up or straight to the right, you will be able to see your reflection.
+<p></p>
+<p>
+Unfortunately in the Hall of Mirrors it is very foggy, so you can't see further than <b>D</b> units away.  Suppose <b>D</b>=3.  If you look up, your reflection will be 1 unit away (0.5 to the mirror, and 0.5 back).  If you look right, your reflection will be 3 units away (1.5 to the mirror, and 1.5 back), and you will be able to see it.  If you look down, your reflection will be 5 units away and you won't be able to see it.
+</p>
+<p>
+It's important to understand how light travels in the Hall of Mirrors.  Light travels in a straight line until it hits a mirror.  If light hits any part of a mirror but its corner, it will be reflected in the normal way: it will bounce off with an angle of reflection equal to the angle of incidence.  If, on the other hand, the light would touch the corner of a mirror, the situation is more complicated.  The following diagrams explain the cases:
+</p>
+<p>
+In the following cases, light approaches a corner and is reflected, changing its direction:
+<br><img src="./Problem C_files/saved_resource"><br>
+In the first two cases, light approached two adjacent mirrors at the point where they met.  Light was reflected in the same way as if it had hit the middle of a long mirror.  In the third case, light approached the corners of three adjacent mirrors, and returned in exactly the direction it came from.
+</p>
+<p>
+In the following cases, light approaches the corners of one or more mirrors, but does not bounce, and instead continues in the same direction:
+<br><img src="./Problem C_files/saved_resource(1)"><br>
+This happens when light reaches distance 0 from the corner of a mirror, but would not have to pass through the mirror in order to continue in the same direction.  In this way, a ray of light can pass between two mirrors that are diagonally adjacent to each other -- effectively going through a space of size 0.  Good thing it's of size 0 too, so it fits!
+</p>
+<p>
+In the final case, light approaches the corner of one mirror and is destroyed:
+<br><img src="./Problem C_files/saved_resource(2)"><br>
+The mirror was in the path of the light, and the ray of light didn't approach the corners of any other mirrors.
+</p>
+<p>
+Note that light stops when it hits you, but it has to hit the exact centre of your grid square.
+</p>
+<p>
+How many images of yourself can you see?
+</p>
+
+<h3>Input</h3>
+<p>
+The first line of the input gives the number of test cases, <b>T</b>.  <b>T</b> test cases follow.  Each test case starts with a line containing three space-separated integers, <b>H</b>, <b>W</b> and <b>D</b>.  <b>H</b> lines follow, and each contains <b>W</b> characters.  The characters constitute a map of the Hall of Mirrors for that test case, as described above.
+</p>
+
+<h3>Output</h3>
+<p>
+For each test case, output one line containing "Case #x: y", where x is the case number (starting from 1) and y is the number of reflections of yourself you can see.
+</p>
+
+<h3>Limits</h3>
+<p>
+1 ≤ <b>T</b> ≤ 100.<br>
+3 ≤ <b>H</b>, <b>W</b> ≤ 30.<br>
+1 ≤ <b>D</b> ≤ 50.<br>
+All characters in each map will be <code>'#'</code>, <code>'.'</code>, or <code>'X'</code>.<br>
+Exactly one character in each map will be <code>'X'</code>.<br>
+The first row, the last row, the first column and the last column of each map will be entirely filled with <code>'#'</code> characters.<br>
+</p>
+
+<h4>Small dataset</h4>
+<p>
+There will be no more than <code>2W+2H-4</code> <code>'#'</code> characters.<br>
+</p>
+
+<h4>Large dataset</h4>
+<p>
+The restriction from the Small dataset does not apply.
+</p>
+
+<h3>Sample</h3>
+<div class="problem-io-wrapper">
+<table>
+<tbody><tr>
+<td>
+<br>
+<span class="io-table-header">Input</span>
+<br>&nbsp;
+</td>
+<td>
+<br>
+<span class="io-table-header">Output</span>
+<br>&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+<code>
+6<br>
+3 3 1<br>
+###<br>
+#X#<br>
+###<br>
+3 3 2<br>
+###<br>
+#X#<br>
+###<br>
+4 3 8<br>
+###<br>
+#X#<br>
+#.#<br>
+###<br>
+7 7 4<br>
+#######<br>
+#.....#<br>
+#.....#<br>
+#..X..#<br>
+#....##<br>
+#.....#<br>
+#######<br>
+5 6 3<br>
+######<br>
+#..X.#<br>
+#.#..#<br>
+#...##<br>
+######<br>
+5 6 10<br>
+######<br>
+#..X.#<br>
+#.#..#<br>
+#...##<br>
+######<br>
+</code>
+</td>
+<td>
+<code>
+Case #1: 4<br>
+Case #2: 8<br>
+Case #3: 68<br>
+Case #4: 0<br>
+Case #5: 2<br>
+Case #6: 28<br>
+<br>
+</code>
+</td></tr></tbody></table>
+</div>
+<p>
+In the first case, light travels exactly distance 1 if you look directly up, down, left or right.
+</p>
+<p>
+In the second case, light travels distance 1.414... if you look up-right, up-left, down-right or down-left.  Since light does not travel through you, looking directly up only shows you one image of yourself.
+</p>
+<p>
+In the fifth case, while the nearby mirror is close enough to reflect light back to you, light that hits the corner of the mirror is destroyed rather than reflected.
+</p></div></div></div>
+
+    <div id="dsb-analysis-page" class="dsb-content-pages"></div>
+
+    <div id="dsb-clarification-page" class="dsb-content-pages">
+      <!-- The clarifications table -->
+      <div id="clarTableDiv" class="clarTableWrapper"></div><div>
+        <table id="dsb-clarification-table">
+          <colgroup span="9">
+            <col width="16%"><col width="2%">
+            <col width="10%"><col width="2%">
+            <col width="28%"><col width="2%">
+            <col width="10%"><col width="2%">
+            <col width="28%">
+          </colgroup>
+          <thead>
+            <tr>
+            <th>Category</th><th>&nbsp;</th>
+            <th class="clarTimeColumn">Asked</th><th>&nbsp;</th>
+            <th>Question</th><th>&nbsp;</th>
+            <th class="clarTimeColumn">Answered</th><th>&nbsp;</th>
+            <th>Answer</th>
+            </tr>
+          </thead>
+          <tbody id="dsb-clarification-tbody">
+          </tbody>
+        </table>
+      </div>
+      <div id="dsb-submit-clarification">
+        <!-- The link to ask a clarification -->
+        <div style="padding: 0.5em 0 0.3em 0;">
+          <b>Ask a question:</b>
+        </div>
+        <!-- The form for asking clarification -->
+        <div>
+          <form onsubmit="return GCJ.submitClarification(this);"><div style="display:none;"><input type="hidden" name="csrfmiddlewaretoken" value="ZDRlNzQzNDhkYTYyNjUzZTllZWNiNGJmMDZjYThiYmJ8MTE1MjA1MDExOTQwNjMxODMyMDU1fDEzMzQzNTg0OTQ2MDExMzU="></div>
+            <div><textarea rows="5" cols="60" name="q"></textarea></div>
+            <div style="padding-top: 0.3em">
+              <select id="dsb-clarification-problem-select" name="problem">
+                <option value="_" selected="">[General]</option>
+              <option value="1483485">A. Speaking in Tongues</option><option value="1595491">B. Dancing With the Googlers</option><option value="1483488">C. Recycled Numbers</option><option value="1285485">D. Hall of Mirrors</option></select>
+              &nbsp;
+              <input id="dsb-submit-clarification-button" type="submit" value="Ask">
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Too many pending clarifications -->
+      <div id="dsb-cannot-ask-question-text" style="font-weight: bold; padding: 0.5em 0 0.3em 0">
+        
+        There is a maximum of 8 pending questions.
+        You can ask more questions as soon as we have responded to some of your
+        questions.
+        
+      </div>
+
+    </div>
+
+    <div id="dsb-submissions-page" class="dsb-content-pages">
+      <div id="dsb-submissions-status" class="dsb-sub-status-msg">
+        You have 0 submissions.
+      </div>
+      <table id="dsb-submissions-table" class="dsb-sub-main-table" style="display:none">
+      <thead>
+        <tr id="dsb-sub-main-table-header">
+          <th class="dsb-sub-row-id-width">ID</th>
+          <th class="dsb-sub-name-width">Problem</th>
+          <th class="dsb-sub-difficulty-width">Size</th>
+          <th class="dsb-sub-input-width">Input</th>
+          <th class="dsb-sub-output-width">Output</th>
+          <th class="dsb-sub-source-width">Solution</th>
+          <th class="dsb-sub-status-width">Status</th>
+          <th class="dsb-sub-time-width">Time</th>
+        </tr>
+      </thead>
+      <tbody id="dsb-submissions-rows">
+      </tbody>
+      </table>
+    </div>
+
+  </div>
+  </div>
+</div>
+
+</div>
+
+<div style="height: 3em; clear: both;"></div>
+
+
+
+
+<div id="footer">
+  
+  
+  <p>
+    
+    All problem statements, input data and contest analyses are
+    licensed under the
+    <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>.
+    
+  </p>
+  
+  <span id="copyright">© 2008-2012 Google</span>
+  <a href="http://www.google.com/">Google Home</a> -
+  <a href="http://code.google.com/codejam/terms.html">Terms and Conditions</a><br><br>
+  <a href="http://developers.google.com/appengine"><img src="./Problem C_files/appengine-noborder-120x30.gif"></a>
+  
+</div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-21302427-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+<div style="height: 1em">&nbsp;</div>
+
+<script type="text/javascript">
+GCJ.initHistory();
+</script><input type="text" name="history_state0" id="history_state0" style="display:none">
+
+
+
+
+</div></body></html>
