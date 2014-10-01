@@ -1,0 +1,65 @@
+<%
+import sys
+import os, os.path
+from whoosh.filedb.filestore import FileStorage
+from whoosh.qparser import QueryParser
+
+
+directory="/home/assem/www/py/booksTracker"
+
+
+
+
+
+req.write("""<html>
+<head>
+<title>The BooksTracker&copy;</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script  type="text/javascript"><!-- src="java.js" -->
+
+var name="";
+
+
+</script>
+<noscript>no supporting for script</noscript>
+
+</head>
+
+
+
+<body>
+<div class="header" align="right"> <a href="admin.psp">admin</a> </div>
+<h1 align="center"><font color="blue"> <u> The Books Tracker  </u></font> </h1>
+<center>
+<form action="index.psp" method="get" onsubmit="" onkeypress="">
+<div >Query:<input  type="name" name="query" value="" size="50" maxlength="100"/>
+<input type="submit" value="search"/></div>
+</form>
+<hr>
+
+</center>
+
+
+""")
+if form.has_key('query'):
+	searcher = apache.import_module('searcher', path=[directory+'/'+"base"])
+	results=searcher.OnlyOneSearch(form["query"],directory+'/'+".index")
+	req.write("results:")
+	cpt=0
+	for x in results:
+		cpt+=1
+		req.write(str(cpt)+".<a href=\""+str(x["path"])+"\">"+str(x["name"])+";</a><br>") 
+#
+req.write("""
+
+</html></body>
+
+""")
+
+
+
+
+
+%>
+
+
