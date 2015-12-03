@@ -1,0 +1,1 @@
+sum(filter(lambda n: str(n) == str(n)[::-1] and "{:b}".format(n) == "{:b}".format(n)[::-1], xrange(1000000)))
