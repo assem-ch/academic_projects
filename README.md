@@ -1,4 +1,2 @@
-Academic_Projects
-=================
+Many codes and scripts from diverse projects through my study ,  learning stuff and competitions
 
-Many codes and scripts from diverse academic projects through my study
