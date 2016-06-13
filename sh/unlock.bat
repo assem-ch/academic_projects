@@ -1,2 +1,0 @@
-@del lock /s
-@pause
