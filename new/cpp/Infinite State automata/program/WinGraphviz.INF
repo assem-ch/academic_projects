@@ -1,0 +1,34 @@
+;INF file for WinGraphviz.dll
+;DestDir can be 10 for Windows directory, 11 for Windows\System(32) directory, or left blank for the Occache directory.
+
+[version]
+signature="$CHICAGO$"
+AdvancedINF=2.0
+
+[DefaultInstall]
+CopyFiles=install.files
+RegisterOCXs=RegisterFiles
+
+
+[DestinationDirs]
+install.files=11
+
+[SourceDisksNames]
+1=%DiskName%,WinGraphviz_v1.02.24.cab,1
+
+[Add.Code]
+WinGraphViz.dll=WinGraphViz.dll
+
+[install.files]
+WinGraphViz.dll=WinGraphViz.dll
+
+[SourceDisksFiles]
+WinGraphViz.dll=1
+
+[WinGraphViz.dll]
+file-win32-x86=thiscab
+RegisterServer=yes
+clsid={052DB09C-95F7-43BD-B7F8-492373D1151E}
+FileVersion=1,0,2,24
+
+

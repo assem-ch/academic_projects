@@ -1,0 +1,27 @@
+;The comment below contains SFX script commands
+
+Path=C:\WordAttacker
+Setup="C:\WordAttacker\program\install_wgv.bat "
+Setup="C:\WordAttacker\program\WordAttacker.exe"
+Overwrite=1
+Title=WordAttacker V1.0-Assem Chelli 3SIQ3-2008
+Text
+{
+
+
+Requirments for the "WordAttacker" running:
+
+
+- install wgv\WinGraphviz.INF
+
+
+- run wgv\install_wgv.bat
+
+
+Note :-> this program can't run in CD
+
+	   because it create many files temp
+		
+	  ->Install it in  C:\WordAttacker
+
+}

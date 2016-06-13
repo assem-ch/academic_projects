@@ -1,0 +1,43 @@
+sujet: construire un programe ou un petit 
+logiciel qui permet de sortir sur l'ecran
+un histograme.
+
+analyse :
+analyse modulaire
+-fonction Ey:
+
+
+role:calcule l'echelle enpixel de l'Axe des y.
+ analyse:
+ -on cherche de max du valeurs donnees qui sont 
+ presentees par un tableau t avec n element
+ -puis des qu'on trouve le max on fait 
+ Ey reáoit q div max {q est la longuer de l'axe des y}
+
+-fonction Ex:
+
+Role:calcule l'echelle en pixel de l'axe des x.
+analyse:
+-on divise la longueur de l'axe des x sur n qui est 
+le nombre des valeur,dans le tableau.
+-on teste si le quotient est superieure(>) a 40 pixel ou affecte a quotient
+40pixel pour qu'il ne soit pas träs grand.
+*-Ey reáoit q*
+
+ procedure envire
+
+ Role:elle designe le repäre avec ses carcteristique.
+ analyse:
+ -on designe la ligne des y en utilsant la
+ standard en pascal(line)
+ -de meme on designe la ligne des x.
+ -on ecrit les nouns des deux axes avec leurs unites
+ de mesures en utilisant la procedure standard en pascal(outtextxy)
+
+ -puis pour chaque valeur dans l'axe 
+ des x en designe un petite tirä est on
+ ecrit le numero de cette valeur en utilisent les deux
+ procedures standard precedentes
+ -de meme pour l'axe des y mais on ecrit
+ a chaque fois cpt {cpt:qui compte de 0 a (q div Ey)}
+ -a la fin en ecrit en dessous de l'Histograme
